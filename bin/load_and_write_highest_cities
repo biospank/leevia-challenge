@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/leevia/csv_stream_reader'
+require_relative '../lib/leevia/strategies/highest_cities_extractor'
+
+csv_reader = Leevia::CsvStreamReader.new(
+  path: File.expand_path('../resources/World_Cities_Location_table.csv', File.dirname(__FILE__)),
+  strategy: Leevia::Strategies::HighestCitiesExtractor,
+  options: { col_sep: ';' }
+)
+
+highest_cities = csv_reader.read
+
+File.open(File.expand_path('../resources/Highest_Cities.txt', File.dirname(__FILE__)), 'w') do |file|
+  highest_cities.each do |city|
+    puts city
+    file.write "#{city}\n"
+  end
+end
